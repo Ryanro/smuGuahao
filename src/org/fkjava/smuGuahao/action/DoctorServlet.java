@@ -70,7 +70,9 @@ public class DoctorServlet extends BaseServlet {
 						
 			// 可能要接收两个参数 
 			String name = request.getParameter("name"); // 医生姓名
+			//System.out.println(name);
 			String partCode = request.getParameter("partCode"); // 科室编号 
+			//System.out.println(partCode);
 			Doctor doctor = new Doctor();
 			doctor.setName(name);
 			doctor.setPartCode(partCode);

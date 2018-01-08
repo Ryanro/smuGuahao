@@ -4,7 +4,7 @@ package org.fkjava.smuGuahao.dto;
  * Register 数据传输类
  * @author xlei @qq 251425887 @tel 13352818008
  * @Email dlei0009@163.com
- * @date 2018-01-04 22:05:43
+ * @date 2018-01-08 17:23:36
  * @version 1.0
  */
 public class Register implements java.io.Serializable{

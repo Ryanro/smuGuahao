@@ -14,10 +14,10 @@
         from doc_doctor
         <!-- 有可能是根据医生姓名或者是科室编号查询医生对象  -->
         <where>
-            <if test="doctor.name !=null &amp;&amp; doctor.name != ''">
-                and name like CONCAT('%',#{doc.name} , '%')
+            <if test="doc.name !=null &amp;&amp; doc.name != ''">
+                and name like CONCAT('%',#{doc.name}, '%')
             </if>
-             <if test="doctor.partCode !=null &amp;&amp; doctor.partCode != ''">
+             <if test="doc.partCode !=null &amp;&amp; doc.partCode != ''">
                 and part_code like  CONCAT('',#{doc.partCode} , '%')
             </if>
         </where>

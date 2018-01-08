@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+   
+  <!-- 把数据库的连接信息关联进来 Spring -->
+  <properties resource="db.properties"></properties>
+    
+  <!-- 数据库环境 -->
+  <environments default="mysql">
+    <!-- 其中之一 -->
+    <environment id="mysql">
+      <!-- 事务管理器：默认使用JDBC管理事物的 
+                        事务：一批操作要么同时成功，要么同时失败。     
+      -->
+      <transactionManager type="JDBC"/>
+      <!-- 数据源，连接池  -->
+      <dataSource type="POOLED">
+         <!-- 驱动  -->
+        <property name="driver" value="${driver}"/>
+        <property name="url" value="${url}"/>
+        <property name="username" value="${username}"/>
+        <property name="password" value="${password}"/>
+      </dataSource>
+    </environment>
+    
+  </environments>
+  <mappers>
+     <!-- 配置映射文件的地址  ：包扫描-->
+     <package name="org.fkjava.smuGuahao.repository"/>
+  </mappers>
+</configuration>

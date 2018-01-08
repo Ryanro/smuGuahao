@@ -4,7 +4,7 @@ package org.fkjava.smuGuahao.dto;
  * Part 数据传输类
  * @author xlei @qq 251425887 @tel 13352818008
  * @Email dlei0009@163.com
- * @date 2018-01-04 22:05:43
+ * @date 2018-01-08 17:23:36
  * @version 1.0
  */
 public class Part implements java.io.Serializable{
@@ -33,5 +33,10 @@ public class Part implements java.io.Serializable{
 	public String getRemark(){
 		return this.remark;
 	}
-
+	@Override
+	public String toString() {
+		return "Part [partCode=" + partCode + ", name=" + name + ", remark="
+				+ remark + "]\n";
+	}
+	
 }
