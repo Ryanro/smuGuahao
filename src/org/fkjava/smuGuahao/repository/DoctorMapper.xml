@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.fkjava.smuGuahao.repository.DoctorMapper">
+	<!-- 配置Mybatis框架的结果集  -->
+    <resultMap type="org.fkjava.smuGuahao.dto.Doctor" id="doctorResultMap">
+       <result column="PART_CODE" property="partCode"/>
+       <result column="CREATE_DATE" property="createDate"/>
+    </resultMap>
+    
+    <sql id="whereSql">
+        from doc_doctor
+        <!-- 有可能是根据医生姓名或者是科室编号查询医生对象  -->
+        <where>
+            <if test="doctor.name !=null &amp;&amp; doctor.name != ''">
+                and name like CONCAT('%',#{doc.name} , '%')
+            </if>
+             <if test="doctor.partCode !=null &amp;&amp; doctor.partCode != ''">
+                and part_code like  CONCAT('',#{doc.partCode} , '%')
+            </if>
+        </where>
+    </sql>
+    
+    <!-- 配置查询医生的动态sql语句  -->
+    <select id="findAll" resultType="org.fkjava.smuGuahao.dto.Doctor">
+        select * <include refid="whereSql"/>
+        limit #{pageModel.firstPageParam} , #{pageModel.pageSize}
+    </select>
+    
+    <!-- 配置查询医生数据总量sql语句  -->
+    <select id="count" resultType="int">
+        select count(*) <include refid="whereSql"/>
+    </select>
+    
+</mapper>
