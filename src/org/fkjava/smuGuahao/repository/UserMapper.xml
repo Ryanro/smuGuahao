@@ -9,5 +9,10 @@
         <result column="LOGIN_NAME" property="loginName"/>
         <result column="PASS_WORD" property="passWord"/>
         <result column="CREATE_DATE" property="createDate"/>
+        <result column="PAGE_SIZE" property="pageSize"/>
     </resultMap>
+        
+     <update id="setNewPageSize">
+        update doc_user set page_size = #{pageSize} where id = #{id}  
+    </update>
 </mapper>

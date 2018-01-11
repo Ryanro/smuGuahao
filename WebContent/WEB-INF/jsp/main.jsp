@@ -154,7 +154,7 @@
 					</a>
 						<ul class="sider-nav-s">
 							<li><a href="javascript:addPanel('0001' ,'/DoctorServlet?method=list','医生管理');">医生管理</a></li>
-							<li><a href="javascript:addPanel('0002' ,'/part?method=list','科室管理');">科室管理</a></li>
+							<li><a href="javascript:addPanel('0002' ,'/PartServlet?method=list','科室管理');">科室管理</a></li>
 							<li><a href="javascript:addPanel('0003' ,'/doctor.action','排诊管理');">排诊管理</a></li>
 							<li><a href="javascript:addPanel('0004' ,'/doctor.action','挂号管理');">挂号管理</a></li>
 						</ul></li>

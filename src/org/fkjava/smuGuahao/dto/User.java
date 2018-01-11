@@ -21,7 +21,20 @@ public class User implements java.io.Serializable{
 	private int role;
 	private java.util.Date createDate;
 	private String active;
+	private int pageSize;
 
+	public int getPageSize() {
+		return this.pageSize;
+	}
+	public void setPageSize(int pageSize) {
+		this.pageSize = pageSize;
+	}
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", loginName=" + loginName + ", passWord=" + passWord + ", name=" + name + ", sex="
+				+ sex + ", email=" + email + ", phone=" + phone + ", address=" + address + ", role=" + role
+				+ ", createDate=" + createDate + ", active=" + active + ", pageSize=" + pageSize + "]";
+	}
 	/** setter and getter method */
 	public void setId(int id){
 		this.id = id;

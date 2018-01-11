@@ -11,7 +11,7 @@ package org.fkjava.smuGuahao.utils;
 public class PageModel {
 	
 	private int pageIndex ;// 当前页码 
-	private int pageSize = 3 ; // 一页最多展示三条数据
+	private int pageSize=3;
 	private int totalCount ; // 当前查询条件下可以分页的总数据量
 	// 总页数：
 	public int getPageCount(){

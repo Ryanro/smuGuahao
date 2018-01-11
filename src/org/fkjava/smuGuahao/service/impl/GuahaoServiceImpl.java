@@ -103,4 +103,14 @@ public class GuahaoServiceImpl implements GuahaoService {
 		
 	}
 
+
+	@Override
+	public void setNewPageSize(User user) {
+		SqlSession sqlSession = MybatisSqlSessionFactory.getSqlSession();
+		UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+		userMapper.setNewPageSize(user);
+		sqlSession.commit();//更新信息需要提交
+		sqlSession.close();
+	}
+
 }

@@ -7,6 +7,7 @@ import javax.servlet.http.HttpSession;
 
 import org.fkjava.smuGuahao.dto.Doctor;
 import org.fkjava.smuGuahao.dto.Part;
+import org.fkjava.smuGuahao.dto.User;
 import org.fkjava.smuGuahao.utils.PageModel;
 
 public interface GuahaoService {
@@ -37,4 +38,10 @@ public interface GuahaoService {
 	 * @param id
 	 */
 	void deleteDocById(String id);
+
+	/**
+	 * 更新用户的pagesize信息
+	 * @param user
+	 */
+	void setNewPageSize(User user);
 }

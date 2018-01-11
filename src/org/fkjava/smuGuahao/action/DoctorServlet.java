@@ -1,6 +1,11 @@
 package org.fkjava.smuGuahao.action;
 
+import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Type;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -11,8 +16,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.fkjava.smuGuahao.dto.Doctor;
 import org.fkjava.smuGuahao.dto.Part;
+import org.fkjava.smuGuahao.dto.User;
 import org.fkjava.smuGuahao.service.GuahaoService;
 import org.fkjava.smuGuahao.service.impl.GuahaoServiceImpl;
+import org.fkjava.smuGuahao.utils.Constants;
 import org.fkjava.smuGuahao.utils.PageModel;
 
 /**
@@ -60,14 +67,48 @@ public class DoctorServlet extends BaseServlet {
 		try {			
 			// 开始分页查询：默认分第一页查询，有可能接收其他要求
 			int pageIndex = 0 ;
+			int pageSize = 0 ;
 			try {
 				pageIndex = Integer.valueOf(request.getParameter("pageIndex"));
 			} catch (Exception e) {
 				System.out.println("当前没有传输页码");
-			}						
+			}	
+			try {
+				pageSize = Integer.valueOf(request.getParameter("pageSize"));
+			} catch (Exception e) {
+			}
 			PageModel pageModel = new PageModel();
-			pageModel.setPageIndex(pageIndex);
-						
+//			pageModel.setPageIndex(pageIndex);
+			// 得到当前Session中的用户对象 
+			User user = (User) request.getSession().getAttribute(Constants.USER_SESSION);
+			//如果该用户有设置
+			String pageSizeUser = user.getPageSize()+"";			
+			//用户没有选择展示数量
+			if(pageSize == 0) {
+				//如果该用户曾经没有选择过或者选择了"3",一页展示三个
+				if(pageSizeUser == null ||  pageSizeUser == "3" ){							
+					// 更新每页展示的数量 
+					pageModel.setPageSize(3);
+				}else if(pageSizeUser == "6") {
+					pageModel.setPageSize(6);
+				}else{
+					pageModel.setPageSize(9);
+				}
+			}else {//用户选择了选项
+				//判断选项和上次是否一样
+				if(pageSize == Integer.valueOf(pageSizeUser)) {
+					//如果一样,更新每页展示的数量 
+					pageModel.setPageSize(Integer.valueOf(pageSizeUser));					
+				}else {
+					// 更新每页展示的数量 
+					pageModel.setPageSize(pageSize);
+					//更新数据库
+					user.setPageSize(pageSize);
+					guahaoService.setNewPageSize(user);					
+				}
+				
+			}
+				
 			// 可能要接收两个参数 
 			String name = request.getParameter("name"); // 医生姓名
 			//System.out.println(name);

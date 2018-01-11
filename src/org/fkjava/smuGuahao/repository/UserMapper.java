@@ -3,6 +3,7 @@ package org.fkjava.smuGuahao.repository;
 
 import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 import org.fkjava.smuGuahao.dto.User;
 
 /**
@@ -17,6 +18,12 @@ public interface UserMapper {
 	@Select("select * from doc_user where LOGIN_NAME = #{xxxx}")
 	@ResultMap("userResultMap")
 	User selectUserByUserId(String userId);
+
+	
+	void setNewPageSize(User user);
+
+
+	
 
 
 

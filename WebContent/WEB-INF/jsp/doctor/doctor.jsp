@@ -72,6 +72,13 @@
  				$(".form-horizontal").trigger("click");
  			}
  		});
+ 	// 页面切换事件 
+		$("#changePageSize").change(function(){
+			window.location = "${pageContext.request.contextPath }/DoctorServlet?method=list&pageSize="+this.value
+			+"&name=${doctor.name}&partCode=${doctor.partCode}";
+		});
+		
+		$("#changePageSize").val("${pageModel.pageSize}");
 	});
 	
 </script>
@@ -141,6 +148,15 @@
 			      <a href="${pageContext.request.contextPath }/DoctorServlet?method=list&pageIndex=${pageModel.pageCount}&name=${doctor.name}&partCode=${doctor.partCode}">
 			              尾页
 			      </a>
+			    </li>
+			    <li>
+			      <a>
+			        <select id="changePageSize" style="height: 20px;">
+							<option value="3">3</option>
+							<option value="6">6</option>
+							<option value="9">9</option>
+					</select>
+					</a>
 			    </li>
 			     <li>
 			     <a>总数据量${pageModel.totalCount}，当前<span style="color: red;">${pageModel.pageIndex}</span>/${pageModel.pageCount}</a>
