@@ -32,6 +32,21 @@ public class GuahaoServiceImpl implements GuahaoService {
 		return parts;
 		
 	}
+	
+	@Override
+	public List<Part> findAllParts(String parentCode) {
+		// 拿持久层对象去查询数据库
+		SqlSession sqlSession = MybatisSqlSessionFactory.getSqlSession();
+		
+		PartMapper partMapper = sqlSession.getMapper(PartMapper.class);
+		
+		List<Part> parts = partMapper.selectAllSon(parentCode);
+		
+		sqlSession.close();
+		
+		return parts;
+	}
+
 
 
 	@Override
@@ -110,6 +125,76 @@ public class GuahaoServiceImpl implements GuahaoService {
 		UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
 		userMapper.setNewPageSize(user);
 		sqlSession.commit();//更新信息需要提交
+		sqlSession.close();
+	}
+
+	@Override
+	public String findNameByCode(String parentCode) {
+		SqlSession sqlSession = MybatisSqlSessionFactory.getSqlSession();
+		
+		PartMapper partMapper = sqlSession.getMapper(PartMapper.class);
+		
+		String name = partMapper.findNameByCode(parentCode);
+		sqlSession.close();
+		return name;
+	}
+
+	@Override
+	public void deletePartsByCode(String ids) {
+		// [ 0001 , 0003 , 0004 ]
+		SqlSession sqlSession = MybatisSqlSessionFactory.getSqlSession();
+		PartMapper partMapper = sqlSession.getMapper(PartMapper.class);
+		String[] codes = ids.split(",");
+		for(String code : codes){
+			partMapper.delete(code+"%"); //子科室一起删除
+		}
+		sqlSession.commit();
+		sqlSession.close();
+	}
+	
+	@Override
+	public String getNextSonCode(String parentCode) {
+		parentCode = parentCode==null ? "" : parentCode;
+		// 1.查询出当前最大的儿子编号 
+		SqlSession sqlSession = MybatisSqlSessionFactory.getSqlSession();
+		PartMapper partMapper = sqlSession.getMapper(PartMapper.class);
+		String currentMaxSonCode = partMapper.getMaxSonCode(parentCode);
+		sqlSession.close();
+		// 分别分析null ""0004 00010007 00010024 00019999
+		//System.out.println("当前最大儿子节点编号："+currentMaxSonCode);
+		// 2.判断当前最大儿子节点编号是否为空 
+		if(currentMaxSonCode!=null){
+			// 截取编号的后4位
+			String sonCodeStr = currentMaxSonCode.substring(parentCode.length());
+			// 转成编号整形形式 
+			// 
+			int sonCodeInt = Integer.valueOf(sonCodeStr);
+			// 下一级编号 
+			sonCodeInt++;  // 8 25 ...
+			// 判断是否越界了 
+			if(sonCodeInt > 9999){
+				throw new RuntimeException("您的编号用完了！");
+			}else{
+				// 编号 ： 父节点编号 + 补0 + 下一级编号  40
+				String preZero = "" ;
+				for(int i = 0 ; i < 4 - (sonCodeInt+"").length() ; i++ ){
+					preZero+="0"; // preZero = preZero + 0;
+				}
+				return parentCode + preZero + sonCodeInt;
+			}
+			
+		}else{
+			// 父节点编号+0001
+			return parentCode + "0001";
+		}
+	}
+	
+	@Override
+	public void save(Part part) {
+		SqlSession sqlSession = MybatisSqlSessionFactory.getSqlSession();
+		PartMapper partMapper = sqlSession.getMapper(PartMapper.class);
+		partMapper.save(part);
+		sqlSession.commit();
 		sqlSession.close();
 	}
 

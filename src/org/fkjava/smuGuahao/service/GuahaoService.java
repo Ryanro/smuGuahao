@@ -44,4 +44,29 @@ public interface GuahaoService {
 	 * @param user
 	 */
 	void setNewPageSize(User user);
+
+	/**
+	 * 根据父节点查询科室信息
+	 * @param parentCode
+	 * @return
+	 */
+	List<Part> findAllParts(String parentCode);
+
+	/**
+	 * 查询父节点科室名字
+	 * @param parentCode
+	 * @return
+	 */
+	String findNameByCode(String parentCode);
+
+	void deletePartsByCode(String ids);
+	
+	/**
+	 * 根据父节点获取它的下一个最大儿子节点编号 
+	 * @param parentCode
+	 * @return
+	 */
+	String getNextSonCode(String parentCode);
+
+	void save(Part part);
 }
