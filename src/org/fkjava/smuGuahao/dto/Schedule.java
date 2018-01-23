@@ -14,6 +14,7 @@ public class Schedule implements java.io.Serializable{
 	private int doctorId;
 	private java.util.Date date;
 	private int num;
+	private String workTimer ;
 
 	/** setter and getter method */
 	public void setId(int id){
@@ -40,5 +41,11 @@ public class Schedule implements java.io.Serializable{
 	public int getNum(){
 		return this.num;
 	}
-
+	
+	public String getWorkTimer() {
+		return workTimer;
+	}
+	public void setWorkTimer(String workTimer) {
+		this.workTimer = workTimer;
+	}
 }

@@ -20,7 +20,7 @@ public class Doctor implements java.io.Serializable{
 	private String phone;
 	private String address;
 	private java.util.Date createDate;
-	private String partCode;
+	private Part part;
 	private String dept;
 
 	/** setter and getter method */
@@ -84,11 +84,11 @@ public class Doctor implements java.io.Serializable{
 	public java.util.Date getCreateDate(){
 		return this.createDate;
 	}
-	public void setPartCode(String partCode){
-		this.partCode = partCode;
+	public Part getPart() {
+		return part;
 	}
-	public String getPartCode(){
-		return this.partCode;
+	public void setPart(Part part) {
+		this.part = part;
 	}
 	public void setDept(String dept){
 		this.dept = dept;

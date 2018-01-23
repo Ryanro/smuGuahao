@@ -1,11 +1,6 @@
 package org.fkjava.smuGuahao.action;
 
-import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.Type;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.ArrayList;
+
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -26,21 +21,6 @@ import org.fkjava.smuGuahao.utils.PageModel;
  * Servlet implementation class DoctorServlet
  */
 @WebServlet("/DoctorServlet")
-//public class DoctorServlet extends HttpServlet {
-//	// 得到业务层对象
-//	private GuahaoService guahaoService = new GuahaoServiceImpl();
-//	private HttpServletRequest request;
-//	private HttpServletResponse response;
-//	
-//	@Override
-//	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//		this.request=request;
-//		this.response=response; 
-//		String method = request.getParameter("method");
-//		 if("list".equals(method)) {
-//			 list();
-//		 }
-//	}
 public class DoctorServlet extends BaseServlet {
 	@Override
 	protected void requestSon() {
@@ -78,18 +58,18 @@ public class DoctorServlet extends BaseServlet {
 			} catch (Exception e) {
 			}
 			PageModel pageModel = new PageModel();
-//			pageModel.setPageIndex(pageIndex);
+			pageModel.setPageIndex(pageIndex);
 			// 得到当前Session中的用户对象 
 			User user = (User) request.getSession().getAttribute(Constants.USER_SESSION);
 			//如果该用户有设置
-			String pageSizeUser = user.getPageSize()+"";			
+			Integer pageSizeUser = user.getPageSize();			
 			//用户没有选择展示数量
 			if(pageSize == 0) {
 				//如果该用户曾经没有选择过或者选择了"3",一页展示三个
-				if(pageSizeUser == null ||  pageSizeUser == "3" ){							
+				if(pageSizeUser == null ||  pageSizeUser == 3 ){							
 					// 更新每页展示的数量 
 					pageModel.setPageSize(3);
-				}else if(pageSizeUser == "6") {
+				}else if(pageSizeUser == 6) {
 					pageModel.setPageSize(6);
 				}else{
 					pageModel.setPageSize(9);
@@ -116,7 +96,9 @@ public class DoctorServlet extends BaseServlet {
 			//System.out.println(partCode);
 			Doctor doctor = new Doctor();
 			doctor.setName(name);
-			doctor.setPartCode(partCode);
+			Part part = new Part();
+			part.setPartCode(partCode);
+			doctor.setPart(part);
 			List<Doctor> doctors = guahaoService.findAllDocs(doctor,pageModel);
 			List<Part> parts  = guahaoService.findAllParts();
 			request.setAttribute("doctor", doctor);
@@ -130,3 +112,5 @@ public class DoctorServlet extends BaseServlet {
 	}
 
 }
+
+

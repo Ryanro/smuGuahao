@@ -27,6 +27,10 @@ public interface PartMapper {
 	
     @Select("select NAME from doc_part where PART_CODE = #{xxds}")
 	String findNameByCode(String parentCode);
+    
+    @Select("select * from doc_part where PART_CODE = #{xxds}")
+    @ResultMap("partResultMap")
+   	String findByCode(String parentCode);
 
     @Delete("delete from doc_part where PART_CODE like #{xxxx}")
 	void delete(String code);

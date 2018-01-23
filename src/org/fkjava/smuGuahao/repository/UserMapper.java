@@ -23,6 +23,16 @@ public interface UserMapper {
 	void setNewPageSize(User user);
 
 
+	void UpdateMessage(User user);
+
+	@Select("select * from doc_user where id = #{xxxx}") 
+    @ResultMap("userResultMap")
+	User SelectMessagebyId(int id);
+
+
+
+
+
 	
 
 

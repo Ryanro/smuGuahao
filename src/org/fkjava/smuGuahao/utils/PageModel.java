@@ -11,7 +11,7 @@ package org.fkjava.smuGuahao.utils;
 public class PageModel {
 	
 	private int pageIndex ;// 当前页码 
-	private int pageSize=3;
+	private int pageSize = 3 ; // 一页最多展示三条数据
 	private int totalCount ; // 当前查询条件下可以分页的总数据量
 	// 总页数：
 	public int getPageCount(){
@@ -44,11 +44,11 @@ public class PageModel {
 	
 	// 分页的第一个参数值 
 	/*SELECT * FROM doc_doctor LIMIT 0 , 3
-      MySql的分页查询语句
+
 	 pageIndex 1 
 	 pageSize  3 
 	 第一个参数：(pageIndex - 1) * pageSize  
-	 第二个参数:  pageSize*/ 
+	 第二个参数:  pageSize*/
 	public int getFirstPageParam(){
 		return (this.getPageIndex() - 1) * this.getPageSize();
 	}

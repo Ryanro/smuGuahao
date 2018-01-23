@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.fkjava.smuGuahao.repository.PartMapper">
+	<!-- 配置Mybatis框架的结果集  -->
+    <resultMap type="org.fkjava.smuGuahao.dto.Part" id="partResultMap">
+       <result column="PART_CODE" property="partCode"/>
+    </resultMap>
+</mapper>

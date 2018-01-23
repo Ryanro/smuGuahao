@@ -24,7 +24,10 @@ public interface DoctorMapper {
 		void deleteDocById(String id);
 
 		int count(@Param("doc")Doctor doctor);
-
+		
+		@Select("select * from doc_doctor where id = #{xxxx}") 
+	    @ResultMap("doctorResultMap")
+		Doctor getDocById(String id);
 
 
 }

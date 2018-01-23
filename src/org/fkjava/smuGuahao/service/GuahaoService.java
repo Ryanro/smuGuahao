@@ -7,8 +7,12 @@ import javax.servlet.http.HttpSession;
 
 import org.fkjava.smuGuahao.dto.Doctor;
 import org.fkjava.smuGuahao.dto.Part;
+import org.fkjava.smuGuahao.dto.Register;
+import org.fkjava.smuGuahao.dto.Schedule;
 import org.fkjava.smuGuahao.dto.User;
 import org.fkjava.smuGuahao.utils.PageModel;
+
+import org.fkjava.smuGuahao.vo.ScheduleData;
 
 public interface GuahaoService {
 	/**
@@ -69,4 +73,31 @@ public interface GuahaoService {
 	String getNextSonCode(String parentCode);
 
 	void save(Part part);
+
+	
+
+	List<ScheduleData> loadDocscheduleDatas(Doctor doctor , List<String> dates,PageModel pageModel) throws Exception;
+
+	Doctor getDocById(String id);
+
+	/**
+	 * 更新user基本信息
+	 * @param user
+	 */
+	void UpdateMessage(User user);
+
+	/**
+	 * 查找user信息
+	 * @param user
+	 * @return 
+	 */
+	User SelectMessagebyId(int id);
+
+	void saveScheduleData(ScheduleData scheduleData) throws Exception;
+
+	void addNewRegister(Register register);
+
+
+
+	void decnum(String date, int doctorId);
 }

@@ -13,7 +13,7 @@ public class Register implements java.io.Serializable{
 	private int id;
 	private int userId;
 	private int doctorId;
-	private java.util.Date date;
+	private String date;
 
 	/** setter and getter method */
 	public void setId(int id){
@@ -34,10 +34,10 @@ public class Register implements java.io.Serializable{
 	public int getDoctorId(){
 		return this.doctorId;
 	}
-	public void setDate(java.util.Date date){
+	public void setDate(String date){
 		this.date = date;
 	}
-	public java.util.Date getDate(){
+	public String getDate(){
 		return this.date;
 	}
 

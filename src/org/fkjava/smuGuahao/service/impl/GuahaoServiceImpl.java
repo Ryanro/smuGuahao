@@ -1,5 +1,7 @@
 package org.fkjava.smuGuahao.service.impl;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,14 +11,22 @@ import javax.servlet.http.HttpSession;
 import org.apache.ibatis.session.SqlSession;
 import org.fkjava.smuGuahao.dto.Doctor;
 import org.fkjava.smuGuahao.dto.Part;
+import org.fkjava.smuGuahao.dto.Register;
+import org.fkjava.smuGuahao.dto.Schedule;
 import org.fkjava.smuGuahao.dto.User;
 import org.fkjava.smuGuahao.repository.DoctorMapper;
 import org.fkjava.smuGuahao.repository.PartMapper;
+import org.fkjava.smuGuahao.repository.RegisterMapper;
+import org.fkjava.smuGuahao.repository.ScheduleMapper;
 import org.fkjava.smuGuahao.repository.UserMapper;
 import org.fkjava.smuGuahao.service.GuahaoService;
 import org.fkjava.smuGuahao.utils.Constants;
+import org.fkjava.smuGuahao.utils.DateUtils;
 import org.fkjava.smuGuahao.utils.MybatisSqlSessionFactory;
 import org.fkjava.smuGuahao.utils.PageModel;
+
+import org.fkjava.smuGuahao.vo.ScheduleData;
+import org.fkjava.smuGuahao.vo.WorkInfo;
 
 public class GuahaoServiceImpl implements GuahaoService {
 	@Override
@@ -100,7 +110,7 @@ public class GuahaoServiceImpl implements GuahaoService {
 		DoctorMapper doctorMapper = sqlSession.getMapper(DoctorMapper.class);
 		// 查询当前总的数据量注入给pageModel
 		int count = doctorMapper.count(doctor);
-		pageModel.setTotalCount(count);
+		if(pageModel!=null) pageModel.setTotalCount(count);
 		// pageModel : 控制当前查询第几页数据
  		List<Doctor> doctors = doctorMapper.findAll(doctor ,pageModel);
 		sqlSession.close();
@@ -198,4 +208,118 @@ public class GuahaoServiceImpl implements GuahaoService {
 		sqlSession.close();
 	}
 
+	@Override
+	public List<ScheduleData> loadDocscheduleDatas(Doctor doc , List<String> dates,PageModel pageModel) throws Exception {
+		SqlSession sqlSession = MybatisSqlSessionFactory.getSqlSession();
+		
+		List<Doctor> doctors = findAllDocs(doc,pageModel);
+		// 定义一个集合用于保存最终所有医生的排诊信息 
+		List<ScheduleData> scheduleDatas = new ArrayList<>();
+		ScheduleMapper scheduleMapper = sqlSession.getMapper(ScheduleMapper.class);
+		for(Doctor doctor : doctors){
+			ScheduleData scheduleData = new ScheduleData();
+			scheduleData.setDoctor(doctor);
+			// 未来七天的排诊信息 
+			List<WorkInfo> workInfos = new ArrayList<>();
+			for(String date : dates){
+				WorkInfo workInfo = new WorkInfo() ;
+				workInfo.setDate(DateUtils.getDate(date));
+				// 接诊信息，以及工作时间 
+				Schedule schedule = scheduleMapper.getWorkInfo(workInfo.getDate(),doctor.getId());
+				if(schedule != null){
+					workInfo.setNum(schedule.getNum());
+					workInfo.setWork_timer(schedule.getWorkTimer());
+				}
+				workInfos.add(workInfo);
+			}
+			scheduleData.setWorkInfos(workInfos);
+			scheduleDatas.add(scheduleData);
+		}
+		return scheduleDatas;
+	}
+	
+	@Override
+	public Doctor getDocById(String id) {
+		SqlSession sqlSession = MybatisSqlSessionFactory.getSqlSession();
+		DoctorMapper doctorMapper = sqlSession.getMapper(DoctorMapper.class);
+		Doctor doctor = doctorMapper.getDocById(id);
+		sqlSession.close();
+		return doctor;
+	}
+
+	@Override
+	public void UpdateMessage(User user) {
+		SqlSession sqlSession = MybatisSqlSessionFactory.getSqlSession();
+		UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+		userMapper.UpdateMessage(user);
+		sqlSession.commit();//更新信息需要提交
+		sqlSession.close();
+		
+	}
+
+
+
+	@Override
+	public User SelectMessagebyId(int id) {
+		SqlSession sqlSession = MybatisSqlSessionFactory.getSqlSession();
+		UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+		User user = userMapper.SelectMessagebyId(id);
+		sqlSession.close();
+		return user;
+	}
+
+	@Override
+	public void saveScheduleData(ScheduleData scheduleData) throws Exception {
+		// 1.保存排诊信息 
+		SqlSession sqlSession = MybatisSqlSessionFactory.getSqlSession();
+		ScheduleMapper scheduleMapper = sqlSession.getMapper(ScheduleMapper.class);
+		// 2.先清楚下个七天可能存在的排诊信息 加入新的排诊信息 
+		List<String> dates = DateUtils.get8FutureSevenDates();
+		// 判断到底是操作哪个七天,
+		if(DateUtils.getDate( scheduleData.getWorkInfos().get(0).getDate() ) 
+				.equals(DateUtils.getDate(new Date()))){
+			dates = DateUtils.getFutureSevenDates();
+		}
+		// 删除这七天的数据 
+		for(String date : dates){
+			Date d = DateUtils.getDateEEE(date);
+			scheduleMapper.deteleSchedule(scheduleData , d);
+		}
+		// 3.清楚下个七天的信息成功了
+		System.out.println("清楚下个七天的信息成功了");
+		for(WorkInfo work : scheduleData.getWorkInfos()){
+			Map<String,Object> params = new HashMap<>();
+			params.put("doc", scheduleData.getDoctor());
+			params.put("work", work);
+			scheduleMapper.save(params);
+		}
+		sqlSession.commit();
+		sqlSession.close();
+	}
+
+	@Override
+	public void addNewRegister(Register register) {
+		SqlSession sqlSession = MybatisSqlSessionFactory.getSqlSession();
+		RegisterMapper registerMapper = sqlSession.getMapper(RegisterMapper.class);
+		registerMapper.addNewRegister(register);
+		sqlSession.commit();//更新信息需要提交
+		sqlSession.close();
+		
+	}
+
+	@Override
+	public void decnum(String date, int doctorId) {
+		SqlSession sqlSession = MybatisSqlSessionFactory.getSqlSession();
+		ScheduleMapper scheduleMapper = sqlSession.getMapper(ScheduleMapper.class);
+		scheduleMapper.decnum(date,doctorId);
+		sqlSession.commit();//更新信息需要提交
+		sqlSession.close();
+		
+	}
+
 }
+
+
+
+	
+	

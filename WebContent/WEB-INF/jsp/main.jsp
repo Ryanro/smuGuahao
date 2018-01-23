@@ -172,9 +172,9 @@
 							<li><a
 								href="javascript:addPanel('0002' ,'/PartServlet?method=list','科室管理');">科室管理</a></li>
 							<li><a
-								href="javascript:addPanel('0003' ,'/doctor.action','排诊管理');">排诊管理</a></li>
+								href="javascript:addPanel('0003' ,'/ScheduleServlet?method=list','排诊管理');">排诊管理</a></li>
 							<li><a
-								href="javascript:addPanel('0004' ,'/doctor.action','挂号管理');">挂号管理</a></li>
+								href="javascript:addPanel('0004' ,'/RegisterServlet?method=list','挂号管理');">挂号管理</a></li>
 						</ul></li>
 				</ul>
 			</div>
@@ -184,7 +184,7 @@
 				<div class="easyui-tabs" id="tt" style="width: 100%; height: 100%;">
 					<div title="当前用户" id="user" style="padding: 10px 5px 5px 10px;">
 						<iframe class="page-iframe"
-							src="${pageContext.request.contextPath}/HomeServlet" frameborder="no"
+							src="${pageContext.request.contextPath}/HomeServlet?method=list" frameborder="no"
 							border="no" height="100%" width="100%" scrolling="auto"></iframe>
 					</div>
 				</div>

@@ -42,7 +42,7 @@
 			if (r){
 				// 删除信息 ，并且在某条件删除某信息后回到的页面依旧在该条件下
 				window.location = "${pageContext.request.contextPath }/DoctorServlet?method=delete&id="+id
-						+"&name=${doctor.name}&partCode=${doctor.partCode}";
+						+"&name=${doctor.name}&partCode=${doctor.part.partCode}";
 					
 			}
 		});
@@ -73,7 +73,7 @@
  	// 页面切换事件 
 		$("#changePageSize").change(function(){
 			window.location = "${pageContext.request.contextPath }/DoctorServlet?method=list&pageSize="+this.value
-			+"&name=${doctor.name}&partCode=${doctor.partCode}";
+			+"&name=${doctor.name}&partCode=${doctor.part.partCode}";
 		});
 		
 		$("#changePageSize").val("${pageModel.pageSize}");
@@ -96,11 +96,10 @@
 							id="partCode" name="partCode"  >
 								<option value="">==请选择科室==</option>
 								<c:forEach items="${parts}" var="part">
-								//保留上次点击的科室于对话框 
-									<c:if test="${doctor.partCode == part.partCode}">
+									<c:if test="${doctor.part.partCode == part.partCode}">
 										<option selected="selected" value="${part.partCode}">${part.name }</option>
 									</c:if>
-									<c:if test="${doctor.partCode != part.partCode}">
+									<c:if test="${doctor.part.partCode != part.partCode}">
 										<option  value="${part.partCode}">${part.name }</option>
 									</c:if>
 								</c:forEach>
@@ -138,12 +137,12 @@
 		   <nav>
 			  <ul class="pagination">
 			    <li id="first">
-			      <a href="${pageContext.request.contextPath }/DoctorServlet?method=list&pageIndex=1&name=${doctor.name}&partCode=${doctor.partCode}">首页</a>
+			      <a href="${pageContext.request.contextPath }/DoctorServlet?method=list&pageIndex=1&name=${doctor.name}&partCode=${doctor.part.partCode}">首页</a>
 			    </li>
-			    <li id="pre"><a href="${pageContext.request.contextPath }/DoctorServlet?method=list&pageIndex=${pageModel.pageIndex - 1}&name=${doctor.name}&partCode=${doctor.partCode}">上一页</a></li>
-			    <li id="next"><a href="${pageContext.request.contextPath }/DoctorServlet?method=list&pageIndex=${pageModel.pageIndex+1}&name=${doctor.name}&partCode=${doctor.partCode}">下一页</a></li>
+			    <li id="pre"><a href="${pageContext.request.contextPath }/DoctorServlet?method=list&pageIndex=${pageModel.pageIndex - 1}&name=${doctor.name}&partCode=${doctor.part.partCode}">上一页</a></li>
+			    <li id="next"><a href="${pageContext.request.contextPath }/DoctorServlet?method=list&pageIndex=${pageModel.pageIndex+1}&name=${doctor.name}&partCode=${doctor.part.partCode}">下一页</a></li>
 			    <li id="last">
-			      <a href="${pageContext.request.contextPath }/DoctorServlet?method=list&pageIndex=${pageModel.pageCount}&name=${doctor.name}&partCode=${doctor.partCode}">
+			      <a href="${pageContext.request.contextPath }/DoctorServlet?method=list&pageIndex=${pageModel.pageCount}&name=${doctor.name}&partCode=${doctor.part.partCode}">
 			              尾页
 			      </a>
 			    </li>
